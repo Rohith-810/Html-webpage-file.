@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Election Voting System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .poll-container {
+      background: white;
+      max-width: 450px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #2196F3;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #1976D2;
+    }
+
+    .result-bar {
+      height: 20px;
+      background: #2196F3;
+      border-radius: 5px;
+      margin: 5px 0;
+      color: white;
+      text-align: center;
+      line-height: 20px;
+      font-size: 12px;
+    }
+
+    .result-container {
+      margin-top: 20px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="poll-container">
+    <h2>🗳️ Election Voting</h2>
+
+    <form id="voteForm">
+      <label><input type="radio" name="candidate" value="Candidate A"> Candidate A</label>
+      <label><input type="radio" name="candidate" value="Candidate B"> Candidate B</label>
+      <label><input type="radio" name="candidate" value="Candidate C"> Candidate C</label>
+      <label><input type="radio" name="candidate" value="Candidate D"> Candidate D</label>
+
+      <button type="button" onclick="castVote()">Vote</button>
+    </form>
+
+    <div class="result-container" id="results"></div>
+  </div>
+
+  <script>
+    let votes = {
+      "Candidate A": 0,
+      "Candidate B": 0,
+      "Candidate C": 0,
+      "Candidate D": 0
+    };
+
+    function castVote() {
+      let selected = document.querySelector('input[name="candidate"]:checked');
+      if (!selected) {
+        alert("⚠️ Please select a candidate before voting!");
+        return;
+      }
+
+      votes[selected.value] += 1;
+      showResults();
+    }
+
+    function showResults() {
+      let totalVotes = Object.values(votes).reduce((a, b) => a + b, 0);
+      let resultHTML = "<h3>📊 Live Results</h3>";
+
+      for (let candidate in votes) {
+        let percent = totalVotes > 0 ? ((votes[candidate] / totalVotes) * 100).toFixed(1) : 0;
+        resultHTML += `
+          <div>
+            ${candidate}: ${votes[candidate]} votes (${percent}%)
+            <div class="result-bar" style="width:${percent}%">${percent > 0 ? percent + "%" : ""}</div>
+          </div>
+        `;
+      }
+
+      document.getElementById("results").innerHTML = resultHTML;
+    }
+  </script>
+
+</body>
+</html>
